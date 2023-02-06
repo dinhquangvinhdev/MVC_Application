@@ -1,7 +1,10 @@
 package com.example.mvc_application.view;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import android.os.Build;
@@ -33,7 +36,6 @@ import retrofit2.Response;
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     private ActivityMainBinding binding;
-    private CountriesAPI api;
     private CountriesAdapter adapter;
     private List<Country> data;
 
@@ -45,7 +47,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 //        binding.lvData.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         binding.lvData.setLayoutManager(new StaggeredGridLayoutManager(2 , LinearLayoutManager.VERTICAL));
+
         pullData();
+
         binding.edtSearchField.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -72,7 +76,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         adapter.updateCountries(tempData);
                         Log.d("bibi 2", editable.toString());
                     }
-                }else {
+                }else if (data != null){
                     Log.d("bibi", data.toString());
                     adapter.updateCountries(data);
                 }
@@ -124,7 +128,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void updateDataToAdapter(List<Country> result) {
         //clone data
         data = new ArrayList<>(result);
-        adapter = new CountriesAdapter(result);
+        adapter = new CountriesAdapter(data);
         adapter.addListener(new CountriesAdapter.onItemClickListener() {
             @Override
             public void onItemClick(Country country) {
@@ -132,6 +136,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         });
         binding.lvData.setAdapter(adapter);
+        new ItemTouchHelper(itemTouchHelperSimpleCallback).attachToRecyclerView(binding.lvData);
         binding.progress.setVisibility(View.GONE);
         binding.lvData.setVisibility(View.VISIBLE);
     }
@@ -140,4 +145,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View view) {
         Toast.makeText(getApplicationContext() ,"click", Toast.LENGTH_SHORT).show();
     }
+
+    ItemTouchHelper.SimpleCallback itemTouchHelperSimpleCallback = new ItemTouchHelper.SimpleCallback(
+            0, ItemTouchHelper.RIGHT|ItemTouchHelper.LEFT) {
+        @Override
+        public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+            return false;
+        }
+
+        @Override
+        public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+            Log.d("bibi", "delete item");
+            data.remove(viewHolder.getAdapterPosition());
+            adapter.notifyDataSetChanged();
+        }
+    };
 }
