@@ -26,4 +26,12 @@ public class Country {
     public void setCapacity(List<String> capacity) {
         this.capacity = capacity;
     }
+
+    @Override
+    public String toString() {
+        return "Country{" +
+                "name=" + name +
+                ", capacity=" + capacity +
+                '}';
+    }
 }

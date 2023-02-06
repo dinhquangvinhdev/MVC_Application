@@ -14,4 +14,11 @@ public class Name {
     public void setCommom(String commom) {
         this.commom = commom;
     }
+
+    @Override
+    public String toString() {
+        return "Name{" +
+                "commom='" + commom + '\'' +
+                '}';
+    }
 }
