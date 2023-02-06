@@ -10,6 +10,7 @@ public class CountriesService {
     private static CountriesService instance;
 
     private CountriesService(){
+    CountriesService(){
         retrofit = new Retrofit.Builder()
                 .baseUrl(BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
@@ -17,14 +18,14 @@ public class CountriesService {
                 .build();
     }
 
-    private synchronized CountriesService getInstance(){
-        if(instance != null){
+    public static synchronized CountriesService getInstance(){
+        if(instance == null){
             instance = new CountriesService();
         }
         return instance;
     }
 
-    private CountriesAPI getApi(){
+    public CountriesAPI getApi(){
         return retrofit.create(CountriesAPI.class);
     }
 }

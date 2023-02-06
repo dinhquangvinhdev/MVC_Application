@@ -1,9 +1,13 @@
 package com.example.mvc_application.model;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.util.List;
 
 public class Country {
+    @SerializedName("name")
     private Name name;
+    @SerializedName("capital")
     private List<String> capacity;
 
     public Country(Name name, List<String> capacity) {

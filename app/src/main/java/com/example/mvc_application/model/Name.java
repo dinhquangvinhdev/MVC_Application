@@ -1,24 +1,27 @@
 package com.example.mvc_application.model;
 
+import com.google.gson.annotations.SerializedName;
+
 public class Name {
-    private String commom;
+    @SerializedName("common")
+    private String common;
 
     public Name(String commom) {
-        this.commom = commom;
+        this.common = commom;
     }
 
-    public String getCommom() {
-        return commom;
+    public String getCommon() {
+        return common;
     }
 
-    public void setCommom(String commom) {
-        this.commom = commom;
+    public void setCommon(String common) {
+        this.common = common;
     }
 
     @Override
     public String toString() {
         return "Name{" +
-                "commom='" + commom + '\'' +
+                "commom='" + common + '\'' +
                 '}';
     }
 }

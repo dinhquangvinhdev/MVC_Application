@@ -7,7 +7,6 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.mvc_application.R;
 import com.example.mvc_application.databinding.ItemCountryBinding;
 import com.example.mvc_application.model.Country;
 
@@ -18,12 +17,11 @@ public class CountriesAdapter extends RecyclerView.Adapter<CountriesAdapter.MyVi
     private onItemClickListener listener;
     private List<Country> countries;
 
-    public CountriesAdapter(onItemClickListener listener, List<Country> countries) {
-        this.listener = listener;
+    public CountriesAdapter(List<Country> countries) {
         this.countries = countries;
     }
 
-    private void addListener(onItemClickListener listener){
+    public void addListener(onItemClickListener listener){
         this.listener = listener;
     }
 
@@ -42,14 +40,19 @@ public class CountriesAdapter extends RecyclerView.Adapter<CountriesAdapter.MyVi
         }
 
         public void onBind(Country country , onItemClickListener listener){
-            binding.tvTitle.setText(country.getName().getCommom());
+            binding.tvTitle.setText(country.getName().getCommon());
             binding.tvBody.setText(country.toString());
-            binding.getRoot().setOnClickListener(listener.onItemClick(country));
+            binding.getRoot().setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    listener.onItemClick(country);
+                }
+            });
         }
     }
 
     public interface onItemClickListener {
-        View.OnClickListener onItemClick(Country country);
+        void onItemClick(Country country);
     }
 
     @NonNull
@@ -61,7 +64,8 @@ public class CountriesAdapter extends RecyclerView.Adapter<CountriesAdapter.MyVi
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-        holder.onBind(countries.get(position), this.listener);
+        Country tempCountry = countries.get(position);
+        holder.onBind(tempCountry, this.listener);
     }
 
     @Override
