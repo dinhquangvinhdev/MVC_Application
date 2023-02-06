@@ -9,7 +9,6 @@ public class CountriesService {
     private static Retrofit retrofit;
     private static CountriesService instance;
 
-    private CountriesService(){
     CountriesService(){
         retrofit = new Retrofit.Builder()
                 .baseUrl(BASE_URL)
