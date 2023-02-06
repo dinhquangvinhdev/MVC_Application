@@ -41,7 +41,7 @@ public class CountriesAdapter extends RecyclerView.Adapter<CountriesAdapter.MyVi
 
         public void onBind(Country country , onItemClickListener listener){
             binding.tvTitle.setText(country.getName().getCommon());
-            binding.tvBody.setText(country.toString());
+            binding.tvBody.setText("Capacity\n" + country.getCapacity());
             binding.getRoot().setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
